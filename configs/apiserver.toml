@@ -1,0 +1,6 @@
+"app_env" = "development"
+"server_address" = ":8080"
+"log_level" = "debug"
+
+[store]
+db_url = "host=localhost dbname=restapi_dev password=ramzesik sslmode=disable"

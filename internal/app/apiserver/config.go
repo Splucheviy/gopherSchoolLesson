@@ -3,24 +3,22 @@ package apiserver
 import (
 	"log"
 
+	"github.com/Splucheviy/gopherSchoolLesson/internal/app/store"
 	"github.com/spf13/viper"
 )
 
 // Env...
 type Config struct {
-	AppEnv     string `mapstructure:"APP_ENV"`
-	ServerAddr string `mapstructure:"SERVER_ADDRESS"`
-	DBPort     int    `mapstructure:"DB_PORT"`
-	DBHost     string `mapstructure:"DB_HOST"`
-	DBUser     string `mapstructure:"DB_USER"`
-	DBPass     string `mapstructure:"DB_PASS"`
-	LogLevel   string `mapstructure:"LOG_LEVEL"`
+	AppEnv     string `mapstructure:"app_env"`
+	ServerAddr string `mapstructure:"server_address"`
+	Store      *store.Config
+	LogLevel string `mapstructure:"log_level"`
 }
 
 // NewEnv...
 func NewConfig() *Config {
 	config := Config{}
-	viper.SetConfigFile("configs/.env")
+	viper.SetConfigFile("configs/apiserver.toml")
 
 	err := viper.ReadInConfig()
 	if err != nil {
