@@ -1,0 +1,2 @@
+goose -dir migrations postgres "postgresql://john:ramzesik@127.0.0.1:5432/restapi_dev?sslmode=disable" up 
+goose -dir migrations postgres "postgresql://john:ramzesik@127.0.0.1:5432/restapi_dev?sslmode=disable" down

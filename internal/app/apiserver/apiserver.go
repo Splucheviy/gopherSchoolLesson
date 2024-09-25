@@ -1,6 +1,7 @@
 package apiserver
 
 import (
+	"github.com/Splucheviy/gopherSchoolLesson/internal/app/store"
 	"github.com/labstack/echo/v4"
 	"github.com/sirupsen/logrus"
 )
@@ -10,6 +11,7 @@ type APIserver struct {
 	config *Config
 	logger *logrus.Logger
 	router *echo.Echo
+	store  *store.Store
 }
 
 // New...
@@ -29,6 +31,10 @@ func (s *APIserver) Start() error {
 
 	s.configureRouter()
 
+	if err := s.configureStore(); err != nil {
+		return err
+    }
+
 	s.logger.Infof("Starting API server on %s", s.config.ServerAddr)
 
 	return s.router.Start(s.config.ServerAddr)
@@ -41,6 +47,17 @@ func (s *APIserver) configureLogger() error {
 	}
 
 	s.logger.SetLevel(level)
+
+	return nil
+}
+
+func (s *APIserver) configureStore() error {
+	st := store.New(s.config.Store)
+	if err := st.Open(); err != nil {
+		return err
+	}
+
+	s.store = st
 
 	return nil
 }
