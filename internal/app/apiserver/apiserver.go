@@ -33,7 +33,7 @@ func (s *APIserver) Start() error {
 
 	if err := s.configureStore(); err != nil {
 		return err
-    }
+	}
 
 	s.logger.Infof("Starting API server on %s", s.config.ServerAddr)
 

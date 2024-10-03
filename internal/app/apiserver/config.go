@@ -12,7 +12,7 @@ type Config struct {
 	AppEnv     string `mapstructure:"app_env"`
 	ServerAddr string `mapstructure:"server_address"`
 	Store      *store.Config
-	LogLevel string `mapstructure:"log_level"`
+	LogLevel   string `mapstructure:"log_level"`
 }
 
 // NewEnv...
