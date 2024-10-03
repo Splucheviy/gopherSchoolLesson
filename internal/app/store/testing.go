@@ -18,7 +18,6 @@ func TestStore(t *testing.T, databaseURL string) (*Store, func(...string)) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer s.Close()
 
 	return s, func(tables ...string) {
 		if len(tables) > 0 {
@@ -26,5 +25,6 @@ func TestStore(t *testing.T, databaseURL string) (*Store, func(...string)) {
 				t.Fatal(err)
 			}
 		}
+		s.Close()
 	}
 }
