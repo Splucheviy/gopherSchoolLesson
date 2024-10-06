@@ -1,2 +1,4 @@
-goose -dir migrations postgres "postgresql://postgres:password@127.0.0.1:5432/restapi_dev?sslmode=disable" up 
-goose -dir migrations postgres "postgresql://postgres:password@127.0.0.1:5432/restapi_dev?sslmode=disable" down
+goose -dir migrations postgres "postgresql://postgres:postgres@127.0.0.1:5432/restapi_dev?sslmode=disable" up 
+goose -dir migrations postgres "postgresql://postgres:postgresd@127.0.0.1:5432/restapi_dev?sslmode=disable" down
+goose -dir migrations postgres "postgresql://postgres:postgres@127.0.0.1:5432/restapi_test?sslmode=disable" up 
+goose -dir migrations postgres "postgresql://postgres:postgres@127.0.0.1:5432/restapi_test?sslmode=disable" down

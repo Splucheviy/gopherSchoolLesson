@@ -1,69 +1,35 @@
 package apiserver
 
 import (
-	"github.com/Splucheviy/gopherSchoolLesson/internal/app/store"
-	"github.com/labstack/echo/v4"
-	"github.com/sirupsen/logrus"
+	"database/sql"
+
+	"github.com/Splucheviy/gopherSchoolLesson/internal/app/store/sqlstore"
 )
 
-// APIserver...
-type APIserver struct {
-	config *Config
-	logger *logrus.Logger
-	router *echo.Echo
-	store  *store.Store
-}
-
-// New...
-func New(config *Config) *APIserver {
-	return &APIserver{
-		config: config,
-		logger: logrus.New(),
-		router: echo.New(),
-	}
-}
-
 // Start...
-func (s *APIserver) Start() error {
-	if err := s.configureLogger(); err != nil {
-		return err
-	}
-
-	s.configureRouter()
-
-	if err := s.configureStore(); err != nil {
-		return err
-	}
-
-	s.logger.Infof("Starting API server on %s", s.config.ServerAddr)
-
-	return s.router.Start(s.config.ServerAddr)
-}
-
-func (s *APIserver) configureLogger() error {
-	level, err := logrus.ParseLevel(s.config.LogLevel)
+func Start(config *Config) error {
+	db, err := newDB(config.DatabaseURL)
 	if err != nil {
 		return err
 	}
 
-	s.logger.SetLevel(level)
+	defer db.Close()
 
-	return nil
+	store := sqlstore.New(db)
+	srv := newServer(store)
+	return srv.router.Start(config.ServerAddr)
 }
 
-func (s *APIserver) configureStore() error {
-	st := store.New(s.config.Store)
-	if err := st.Open(); err != nil {
-		return err
+func newDB(databaseURL string) (*sql.DB, error) {
+	db, err := sql.Open("postgres", databaseURL)
+	if err != nil {
+		return nil, err
 	}
 
-	s.store = st
+	if err := db.Ping(); err != nil {
+        return nil, err
+ 
+	}
 
-	return nil
-}
-
-func (s *APIserver) configureRouter() {
-	s.router.GET("/hello", func(c echo.Context) error {
-		return c.String(200, "Hello, World!")
-	})
+	return db, nil
 }
