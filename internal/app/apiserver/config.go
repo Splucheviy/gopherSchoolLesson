@@ -3,16 +3,15 @@ package apiserver
 import (
 	"log"
 
-	"github.com/Splucheviy/gopherSchoolLesson/internal/app/store"
 	"github.com/spf13/viper"
 )
 
 // Env...
 type Config struct {
-	AppEnv     string `mapstructure:"app_env"`
-	ServerAddr string `mapstructure:"server_address"`
-	Store      *store.Config
-	LogLevel   string `mapstructure:"log_level"`
+	AppEnv      string `mapstructure:"app_env"`
+	ServerAddr  string `mapstructure:"server_address"`
+	LogLevel    string `mapstructure:"log_level"`
+	DatabaseURL string `mapstructure:"db_url"`
 }
 
 // NewEnv...
