@@ -12,6 +12,7 @@ type Config struct {
 	ServerAddr  string `mapstructure:"server_address"`
 	LogLevel    string `mapstructure:"log_level"`
 	DatabaseURL string `mapstructure:"db_url"`
+	SessionKey  string `mapstructure:"session_key"`
 }
 
 // NewEnv...

@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/Splucheviy/gopherSchoolLesson/internal/app/store/sqlstore"
+	"github.com/gorilla/sessions"
 )
 
 // Start...
@@ -16,7 +17,8 @@ func Start(config *Config) error {
 	defer db.Close()
 
 	store := sqlstore.New(db)
-	srv := newServer(store)
+	sessionStore := sessions.NewCookieStore([]byte(config.SessionKey))
+	srv := newServer(store, sessionStore)
 	return srv.router.Start(config.ServerAddr)
 }
 
@@ -27,8 +29,8 @@ func newDB(databaseURL string) (*sql.DB, error) {
 	}
 
 	if err := db.Ping(); err != nil {
-        return nil, err
- 
+		return nil, err
+
 	}
 
 	return db, nil
