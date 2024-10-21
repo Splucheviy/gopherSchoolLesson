@@ -8,10 +8,10 @@ import (
 
 // User...
 type User struct {
-	ID                int
-	Email             string
-	Password          string
-	EncryptedPassword string
+	ID                int    `param:"id" query:"id" form:"id" json:"id" xml:"id"`
+	Email             string `param:"email" query:"email" form:"email" json:"email" xml:"email"`
+	Password          string `param:"password" query:"password" form:"password" json:"password" xml:"password"`
+	EncryptedPassword string `param:"-" query:"-" form:"-" json:"-" xml:"-"`
 }
 
 // Validate...
@@ -21,6 +21,16 @@ func (u *User) Validate() error {
 		validation.Field(&u.Email, validation.Required, is.Email),
 		validation.Field(&u.Password, validation.By(requiredIf(u.EncryptedPassword == "")), validation.Length(6, 100)),
 	)
+}
+
+// Sanitize ...
+func (u *User) Sanitize() {
+	u.Password = ""
+}
+
+// ComparePassword...
+func (u *User) ComparePassword(password string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(u.EncryptedPassword), []byte(password)) == nil
 }
 
 // BeforeCreate...
