@@ -42,6 +42,8 @@ func (s *server) configureRouter() {
 	s.router.POST("/sessions", s.handleSessionsCreate)
 }
 
+
+
 func (s *server) handleUserCreate(c echo.Context) error {
 	type request struct {
 		Email    string `param:"email" query:"email" form:"email" json:"email" xml:"email"`
